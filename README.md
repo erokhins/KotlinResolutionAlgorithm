@@ -1,7 +1,7 @@
 # KotlinResolveAlgorithm
 Description for new resolve algorithm
 
-# Expression Typing Facade
+### Expression Typing Facade
 
 Computes a type for an expression.
 
