@@ -5,14 +5,10 @@ Description for new resolve algorithm
 
 Computes a type for an expression.
 
-Input:
-- expression
-- context (ExpressionTypingContext)
+- Input:
+  - expression
+  - context (ExpressionTypingContext)
+- Output:
+  - TypeInfo for the expression
 
-Output:
-- TypeInfo for the expression
-
-<!---
-Code: ExpressionTypingFacade.getTypeInfo()
--->
-
+> Code: ExpressionTypingFacade.getTypeInfo()
