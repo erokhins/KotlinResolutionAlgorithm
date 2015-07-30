@@ -9,11 +9,11 @@ This context contains:
 
 ### Expression Typing Facade
 For each expression with ExpressionContext we can get JetTypeInfo.
-If Resolve mode was RESOLUTION_WITH_INFERENCE then JetTypeInfo contais that information:
+If Resolve mode is RESOLUTION_WITH_INFERENCE then JetTypeInfo contains that information:
 - JetType for expression
 - data flow info
 
-Otherwise, when resolve mode is ONLY_RESOLUTION, JetTypeInfo contains:
+Otherwise, if resolve mode is ONLY_RESOLUTION, JetTypeInfo contains:
 - data flow info
 - addition data flow info.
 - constrain system for this expression
