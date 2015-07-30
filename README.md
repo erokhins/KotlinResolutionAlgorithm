@@ -81,7 +81,7 @@ We also analyze all callable references cr_1, cr_2..., but here are two cases:
 	- In this case we have to do with such callable reference as usual argument
 	
 2. There are several callable references:
-	- Then we have dealing with it as lambda.
+	- Then we have to deal with it as lambda.
 	
 ```Kotlin
 fun bas(s: String): Int {}
@@ -95,12 +95,12 @@ For argument `::bas` we have only one candidate `bas(String): Int`. Therefore, `
 
 *NOTE:* If class A has member function `foo` and extension function `foo` then `x::foo` has at least two candidates.
 
-But argument `::foo` have two candidates. Thereby, we can't get JetTypeInfo for this argument.
+But argument `::foo` has two candidates. Thereby, we can't get JetTypeInfo for this argument.
 We have to do with this argument like `{ arguments -> foo(arguments) }`, where arguments with their types get out after name resolution for `bar` function.
 
 *NOTE:* If receiver is callable reverence then we always have to do with it like usual argument.
 
-For function literal arguemtns we constrain shape types.
+For function literal arguments we constrain shape types.
 Example: for lambda `{ x: Int, y ->  some code }` a shape type is \[(Int, ???) -> ??? or ???.(Int, ???) -> ???\].
 
 *NOTE:* We can't express receiver type for lambda expression. Also we can't figure out precise function type for lambda.
