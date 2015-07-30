@@ -92,6 +92,8 @@ val a = bar(::bas, ::foo)
 ``` 
 For argument `::bas` we have only one candidate `bas(String): Int`. Therefore, `::bas` has JetTypeInfo with type `(String) -> Int`.
 
+*NOTE:* If class A has member function `foo` and extension function `foo` then `x::foo` has at least two candidates.
+
 But argument `::foo` have two candidates. Thereby, we can't get JetTypeInfo for this argument.
 We have to do with this argument like `{ arguments -> foo(arguments) }`, where arguments with their types get out after name resolution for `bar` function.
 
@@ -107,8 +109,36 @@ Example: for lambda `{ x: Int, y ->  some code }` a shape type is \[(Int, ???) -
 
 #### Data flow info for arguments
 
+Data flow info for receiver must be considered for arguments. Also data flow info for first argument must be considered for second argument, e.t.c.
 
+> TODO: for call `foo(arg2 = ..., arg1= ...)` data flow info counted in the wrong order.
 
+Examples:
+```Kotlin
+fun foo(a: () -> Int, b: Int, c: () -> Int) {}
+
+fun test(x: Int?){
+	x?.plus(x) // x in argument is not null
+
+	foo({x}, x!!, {x}) // both smart cast is correct	
+}
+```
+
+As we see above, data flow info for lambda contain all data flow info for usual arguments. 
+It is correct, because in runtime we calculate all arguments before running lambda(for them we just create anonymous object)
+
+```Kotlin
+class X {
+	fun foo() {}
+	fun foo(i: Int) {}
+}
+fun foo(() -> Unit, x: X) {}
+
+fun test(x: X?) {
+	foo(x!!::foo, x) // smartcast for second argument
+}
+```
+Data flow info for receiver of callable reference must be considered for following arguments even callable reverence have several candidates.
 
 
 
