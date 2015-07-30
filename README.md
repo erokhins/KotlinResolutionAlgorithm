@@ -139,7 +139,7 @@ fun test(x: X?) {
 	foo(x!!::foo, x) // smart cast for second argument
 }
 ```
-Data flow info for receiver of callable reference must be considered for following arguments even if callable reverence have several candidates.
+Data flow info for receiver of callable reference must be considered for following arguments even if callable reverence has several candidates.
 
 
 
