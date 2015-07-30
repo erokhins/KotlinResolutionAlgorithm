@@ -1,13 +1,13 @@
 # KotlinResolveAlgorithm
 Description for new resolve algorithm
 
-### ExpressionContext
+## ExpressionContext
 This context contains:
 - Scope
 - Expected type
 - Resolve mode(ONLY_RESOLUTION or RESOLUTION_WITH_INFERENCE)
 
-### Expression Typing Facade
+## Expression Typing Facade
 For each expression with ExpressionContext we can get JetTypeInfo.
 If Resolve mode is RESOLUTION_WITH_INFERENCE then JetTypeInfo contains that information:
 - JetType for expression
@@ -35,6 +35,7 @@ fun emptyList<E>(): List<E>
 
 val list: List<Int> = emptyList()
 ```
+
 For `emptyList()` context have expected type `List<Int>` and same resolve mode: RESOLUTION_WITH_INFERENCE.
 But we always do resolve with ONLY_RESOLUTION, after that, if real resolve mode is RESOLUTION_WITH_INFERENCE
 we complete inference i.e. solve constrain system.
@@ -48,12 +49,82 @@ Result for first stage:
 
 > TODO: Remove addition data flow info after resolve function body
 
-### Call Resolver
+## Call Resolver
 
 *Input:*
-- call `[r].foo(a_1, a_2, ..., fl_1, fl_2, ... cr_1, cr_2 , ...)`
-	- fl_1, fl_2... are function literal arguments;
+- call `[r].foo(a_1, a_2, ..., l_1, l_2, ... cr_1, cr_2 , ...)`
+	- receiver may not exist
+	- l_1, l_2... are lambda arguments;
 	- cr_1, cr_2... - callable references
 	- order of arguments can be any
 - CallContext - ExpressionContext with some addition info
+
+*Output:*
+- resolution result
+- JetTypeInfo
+
+The process of the call resolution contains steps that are descripted below:
+1. Resolve receiver and arguments. Collects their type infos.
+2. Build prioritize task. Each task contains several candidats, which have same prioprity.
+3. Resolve(try) each candidate. Remove unsuccessful candidates.
+4. Find the most specific candidate.
+5. If resolve mode is RESOLUTION_WITH_INFERENCE then solve constain system.
+
+
+## Resolve receiver and arguments.
+We analyze receiver and all usual arguments a_1, ... and save their JetTypeInfo.
+
+We also analyze all callable references cr_1, cr_2..., but here is two cases:
+1. Exist only one callable reference with given receiver and function name.
+	In this case we have to do with such callable reference as usualt argument
+	
+2. There is several callable references:
+	Then we have dealing with it as lambda.
+	
+```Kotlin
+fun bas(s: String): Int {}
+
+fun foo() {}
+fun foo(a: Int) {}
+
+val a = bar(::bas, ::foo)
+``` 
+For argument `::bas` we have only one candidate `bas(String): Int`. Therefore, `::bas` has JetTypeInfo with type `(String) -> Int`.
+
+But argument `::foo` have two candidates. Thereby, we can't get JetTypeInfo for this argument.
+We have to do with this argument like `{ arguments -> foo(arguments) }`, where arguments with their types get out after name resolution for `bar` function.
+
+*NOTE:* If receiver is callable reverence then we always have to do with it like usual argument.
+
+For function literal arguemtns we constrain shape types.
+Example: for lambda `{ x: Int, y ->  some code }` a shape type is \[(Int, ???) -> ??? or ???.(Int, ???) -> ???\].
+
+*NOTE:* We can't express receiver type for lambda expression. Also we can't figure out precise function type for lambda.
+
+> TODO: `val a = { 5 }` what type has `a`?
+
+
+#### Data flow info for arguments
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
