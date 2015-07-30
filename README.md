@@ -75,11 +75,12 @@ The process of the call resolution contains steps that are descripted below:
 We analyze receiver and all usual arguments a_1, ... and save their JetTypeInfo.
 
 We also analyze all callable references cr_1, cr_2..., but here is two cases:
+
 1. Exist only one callable reference with given receiver and function name.
-	In this case we have to do with such callable reference as usualt argument
+	- In this case we have to do with such callable reference as usualt argument
 	
 2. There is several callable references:
-	Then we have dealing with it as lambda.
+	- Then we have dealing with it as lambda.
 	
 ```Kotlin
 fun bas(s: String): Int {}
