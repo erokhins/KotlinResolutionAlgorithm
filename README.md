@@ -26,7 +26,8 @@ fun test(): Int
 
 val a = test()
 ```
-For `test()` expression we created context with NO_EXPECTED_TYPE and RESOLUTION_WITH_INFERENCE, because it is top-level call
+For `test()` expression we created context with NO_EXPECTED_TYPE and RESOLUTION_WITH_INFERENCE, because it is top-level call.
+
 Result was: JetType = Int, empty data flow info.
 
 ```Kotlin
