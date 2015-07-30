@@ -136,7 +136,7 @@ class X {
 fun foo(() -> Unit, x: X) {}
 
 fun test(x: X?) {
-	foo(x!!::foo, x) // smartcast for second argument
+	foo(x!!::foo, x) // smart cast for second argument
 }
 ```
 Data flow info for receiver of callable reference must be considered for following arguments even callable reverence have several candidates.
