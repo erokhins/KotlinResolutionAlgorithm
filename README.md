@@ -36,7 +36,7 @@ fun emptyList<E>(): List<E>
 val list: List<Int> = emptyList()
 ```
 For `emptyList()` context have expected type `List<Int>` and same resolve mode: RESOLUTION_WITH_INFERENCE.
-But we always do resolve with ONLY_RESOLUTION, after that if real resolve mode was RESOLUTION_WITH_INFERENCE
+But we always do resolve with ONLY_RESOLUTION, after that if real resolve mode is RESOLUTION_WITH_INFERENCE
 we complete inference i.e. solve constrain system.
 
 Result for first stage:  
