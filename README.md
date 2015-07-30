@@ -64,6 +64,7 @@ Result for first stage:
 - JetTypeInfo
 
 The process of the call resolution contains steps that are descripted below:
+
 1. Resolve receiver and arguments. Collect their type infos.
 2. Build prioritize task. Each task contains several candidates, which have same priority.
 3. Resolve(try) each candidate. Remove unsuccessful candidates.
