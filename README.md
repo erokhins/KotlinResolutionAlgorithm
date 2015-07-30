@@ -64,22 +64,22 @@ Result for first stage:
 - JetTypeInfo
 
 The process of the call resolution contains steps that are descripted below:
-1. Resolve receiver and arguments. Collects their type infos.
-2. Build prioritize task. Each task contains several candidats, which have same prioprity.
+1. Resolve receiver and arguments. Collect their type infos.
+2. Build prioritize task. Each task contains several candidates, which have same priority.
 3. Resolve(try) each candidate. Remove unsuccessful candidates.
 4. Find the most specific candidate.
 5. If resolve mode is RESOLUTION_WITH_INFERENCE then solve constain system.
 
 
-## Resolve receiver and arguments.
+## Resolve receiver and arguments
 We analyze receiver and all usual arguments a_1, ... and save their JetTypeInfo.
 
-We also analyze all callable references cr_1, cr_2..., but here is two cases:
+We also analyze all callable references cr_1, cr_2..., but here are two cases:
 
-1. Exist only one callable reference with given receiver and function name.
-	- In this case we have to do with such callable reference as usualt argument
+1. Exists only one callable reference with given receiver and function name.
+	- In this case we have to do with such callable reference as usual argument
 	
-2. There is several callable references:
+2. There are several callable references:
 	- Then we have dealing with it as lambda.
 	
 ```Kotlin
