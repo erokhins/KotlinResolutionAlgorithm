@@ -66,7 +66,7 @@ Result for first stage:
 The process of the call resolution contains steps that are descripted below:
 
 1. Resolve receiver and arguments. Collect their type infos.
-2. Build prioritize task. Each task contains several candidates, which have same priority.
+2. Build prioritized tasks. Each task contains several candidates, which have same priority.
 3. Resolve(try) each candidate. Remove unsuccessful candidates.
 4. Find the most specific candidate.
 5. If resolve mode is RESOLUTION_WITH_INFERENCE then solve constain system.
@@ -141,7 +141,24 @@ fun test(x: X?) {
 ```
 Data flow info for receiver of callable reference must be considered for following arguments even if callable reverence has several candidates.
 
+## Build prioritized tasks.
 
+If call `foo` has receiver `r`, then `r` has JetTypeInfo with type for `r`. 
+It type may contain nonfixed type variables T_i. Also JetTypeInfo constrain system for T_i.
+
+When we created task(group of candidates) with members of `r`, we should collect following candidates:
+
+- If `r` has type like `List<T>`, then we just collect all members of `List<X>` with substituted type parameters: `X = T`.
+- If `r` has type `T`, where `T` is type variable, then we get all constains like `T` is subtype of `SomeType`, and collect all members from all `SomeType`.
+
+Example. Let `T` has following constrains: `T <: X, T <: BarU, T = BarE, T :> BarL, T <: Comparable<T>`. (X is type variable)
+Then we collect all members with name `foo` from `BarU`, `BarE`, `Comparable<E>`.
+
+When we created task with extension function, we just collected all extension function with given name.
+
+> TODO: some optimization for extension function?
+
+> TODO: add full description for task creation: Impicit receiver, member|extension receivers, invoke convention.
 
 
 
