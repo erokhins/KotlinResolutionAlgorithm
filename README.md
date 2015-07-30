@@ -125,7 +125,7 @@ fun test(x: Int?){
 }
 ```
 
-As we see above, data flow info for lambda contain all data flow info for usual arguments. 
+As we see above, data flow info for lambda contains all data flow info for usual arguments. 
 It is correct, because in runtime we calculate all arguments before running lambda(for them we just create anonymous object)
 
 ```Kotlin
@@ -139,7 +139,7 @@ fun test(x: X?) {
 	foo(x!!::foo, x) // smart cast for second argument
 }
 ```
-Data flow info for receiver of callable reference must be considered for following arguments even callable reverence have several candidates.
+Data flow info for receiver of callable reference must be considered for following arguments even if callable reverence have several candidates.
 
 
 
