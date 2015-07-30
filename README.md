@@ -121,7 +121,7 @@ fun foo(a: () -> Int, b: Int, c: () -> Int) {}
 fun test(x: Int?){
 	x?.plus(x) // x in argument is not null
 
-	foo({x}, x!!, {x}) // both smart cast is correct	
+	foo({x}, x!!, {x}) // both smart cast are correct	
 }
 ```
 
