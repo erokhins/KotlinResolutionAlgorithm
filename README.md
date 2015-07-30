@@ -46,3 +46,13 @@ Result for first stage:
 
 
 > TODO: Remove addition data flow info after resolve function body
+
+### Call Resolver
+
+*Input:*
+- call `[r].foo(a_1, a_2, ..., fl_1, fl_2, ... cr_1, cr_2 , ...)`
+	- fl_1, fl_2... are function literal arguments;
+	- cr_1, cr_2... - callable references
+	- order of arguments can be any
+- CallContext - ExpressionContext with some addition info
+
