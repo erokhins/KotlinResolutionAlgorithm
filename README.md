@@ -160,6 +160,38 @@ When we created task with extension function, we just collected all extension fu
 
 > TODO: add full description for task creation: Impicit receiver, member|extension receivers, invoke convention.
 
+## Lambdas
+We can't analyze lambda body when we don't know some type of argument or receiver.
+Therefore we begin the process of body analyze when we know all types. 
+This may happend for many reason:
+
+- Function, which receive lambda, has explicit types for lambda parameters and receiver.
+- We solved part(or all) of constraint system and parameter types have become known.
+
+For last expression in lambda body and for all labeled returns resolve mode was ONLY_RESOLUTION.
+If return type for lambda is know, then we complete analyze with given expected type. 
+Otherwise, we combine constrain systems for these expression and for upper calls. 
+
+Examples:
+```Kotlin
+fun <K, V> bar(k: K, run: (K) -> V): V = null!! 
+fun listOf<T>(value: T): List<T> = null!!
+
+val a = bar(1) { // after we analyzed expression `1`, we fixed K = Int
+    if (it == 0) return@bar listOf(it) // JetTypeInfo: List<T1>, T1 :> Int
+
+    listOf("") // JetTypeInfo: List<T2>, T2 :> String
+} 
+/*
+Common system:
+V :> List<T1>
+V :> List<T2>
+T1 :> Int
+T2 :> String
+*/
+```
+
+
 
 
 
