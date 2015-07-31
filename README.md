@@ -251,7 +251,7 @@ Fix K = Int & resolve { it }
 > - Conventions: plus, invoke.
 > - Special calls: `if`, `when`, `!!`, `?:`. 
 
-# Constrain system optimization. Similar systems
+## Constrain system optimization. Similar systems
 ```Kotlin
 val a = listOf(
     Pair('a', mapOf()),
