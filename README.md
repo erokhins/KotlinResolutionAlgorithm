@@ -228,10 +228,19 @@ fun ref(s : String) {}
 fun <T, K> foo(f: (T) -> K, g: (K) -> Int): T = null!!
 
 fun test1() {
-	val a: Int = foo (:: ref ) { it }
+	val a: Int = foo ( ::ref ) { it }
 }
-```
+/*
+Constraint system for foo:
+T <: Int
+K (empty)
+Fix T = Int & resolve ::ref to <T> ref(T): Int 
 
+new constain system for foo:
+K >: Int
+Fix K = Int & resolve { it }
+*/
+```
 
 ----
 
@@ -242,7 +251,27 @@ fun test1() {
 > - Conventions: plus, invoke.
 > - Special calls: `if`, `when`, `!!`, `?:`. 
 
+# Constrain system optimization. Similar systems
+```Kotlin
+val a = listOf(
+    Pair('a', mapOf()),
+    Pair('b', mapOf()),
+    Pair('c', mapOf()),
+    Pair('d', mapOf(Pair("", ""))),
+    Pair('e', mapOf())
+)
+``` 
+For this case we can detect, what `Pair('a', mapOf())` and `Pair('b', mapOf())` similar.
+Or more precisely, constraint system for both this call are equals, and we can add only one of then to constrain system for `listOf`.
 
+About equals (and hashcode) for constraint system.
+For each constrain system we can rename type variables with special way. 
+Example: `foo<T1, T2>(bar<T3, T4>(bas<T5>()), bal<T6>())`.
+After that we can collect original constraints with new names for type variables, and concat all constraints to string.
+If two these string are equals then constraints system are equals.
+
+
+ 
 
 
 
