@@ -159,9 +159,9 @@ fun test(x: Int?) {
 ## Build prioritized tasks.
 
 If call `foo` has receiver `r`, then `r` has JetTypeInfo with type for `r`. 
-It type may contain nonfixed type variables T_i. Also JetTypeInfo constrain system for T_i.
+Its type may contain nonfixed type variables T_i. Also JetTypeInfo contains constrain system for T_i.
 
-When we created task(group of candidates) with members of `r`, we should collect following candidates:
+When we create task(group of candidates) with members of `r`, we should collect following candidates:
 
 - If `r` has type like `List<T>`, then we just collect all members of `List<X>` with substituted type parameters: `X = T`.
 - If `r` has type `T`, where `T` is type variable, then we get all constains like `T` is subtype of `SomeType`, and collect all members from all `SomeType`.
