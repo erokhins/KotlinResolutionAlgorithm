@@ -191,6 +191,19 @@ T2 :> String
 */
 ```
 
+## Resolve candidate
+For each candidate we must give an answer match or not. If not, we collect some errors.
+Now, we have collected JetTypeInfo for arguments and receiver. 
+Also we builded shape types for lambda arguments(see *Resolve receiver and arguments*).
+
+We construct common system which contains type variable for call `foo` and all constraint system for receiver and arguments.
+After that, we search conflicts in this system(i.e. system never sucsedded). 
+If we not found them, then candidate is succesfull and JetTypeInfo contains this common system.
+
+*WARNING:* We must never run lambda analyze in this process, because we must analyze lambda only ones.
+
+> TODO: Arguments to parameters mapping, shape types checks.
+
 
 
 
