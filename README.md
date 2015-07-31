@@ -166,7 +166,7 @@ When we created task(group of candidates) with members of `r`, we should collect
 - If `r` has type like `List<T>`, then we just collect all members of `List<X>` with substituted type parameters: `X = T`.
 - If `r` has type `T`, where `T` is type variable, then we get all constains like `T` is subtype of `SomeType`, and collect all members from all `SomeType`.
 
-Example. Let `T` has following constrains: `T <: X, T <: BarU, T = BarE, T :> BarL, T <: Comparable<T>`. (X is type variable)
+Example. Let `T` have following constrains: `T <: X, T <: BarU, T = BarE, T :> BarL, T <: Comparable<T>`. (X is type variable)
 Then we collect all members with name `foo` from `BarU`, `BarE`, `Comparable<E>`.
 
 When we created task with extension function, we just collected all extension function with given name.
@@ -178,13 +178,13 @@ When we created task with extension function, we just collected all extension fu
 ## Lambdas
 We can't analyze lambda body when we don't know some type of argument or receiver.
 Therefore we begin the process of body analyze when we know all types. 
-This may happend for many reason:
+This may happen for many reasons:
 
 - Function, which receive lambda, has explicit types for lambda parameters and receiver.
 - We solved part(or all) of constraint system and parameter types have become known.
 
 For last expression in lambda body and for all labeled returns resolve mode was ONLY_RESOLUTION.
-If return type for lambda is know, then we complete analyze with given expected type. 
+If return type for lambda is known, then we complete analyze with given expected type. 
 Otherwise, we combine constrain systems for these expression and for upper calls. 
 
 Examples:
@@ -207,7 +207,7 @@ T2 :> String
 ```
 
 ## Resolve candidate
-For each candidate we must give an answer match or not. If not, we collect some errors.
+For each candidate we must give an answer if it is a match or not. If not, we collect some errors.
 Now, we have collected JetTypeInfo for arguments and receiver. 
 Also we builded shape types for lambda arguments(see *Resolve receiver and arguments*).
 
@@ -215,11 +215,23 @@ We construct common system which contains type variable for call `foo` and all c
 After that, we search conflicts in this system(i.e. system never sucsedded). 
 If we not found them, then candidate is succesfull and JetTypeInfo contains this common system.
 
-*WARNING:* We must never run lambda analyze in this process, because we must analyze lambda only ones.
+*WARNING:* We must never run lambda analyze in this process, because we must analyze lambda only onсe.
 
 > TODO: Arguments to parameters mapping, shape types checks.
 
+## Order for solving constraint system
+We create special order for fixing type variables.
 
+
+
+----
+
+> TODO: 
+>	
+> - Most specific candidate.
+> - Constrain system.
+> - Conventions: plus, invoke.
+> - Special calls: `if`, `when`, `!!`, `?:`. 
 
 
 
