@@ -214,7 +214,7 @@ Also we builded shape types for lambda arguments(see *Resolve receiver and argum
 
 Now we construct common system which contains type variable for call `foo` and all constraint system for receiver and arguments.
 After that, we search conflicts in this system(i.e. system never sucsedded). 
-If we don't find them, then candidate is successful and JetTypeInfo contains this common system.
+If we haven't found them, then candidate is successful and JetTypeInfo contains this common system.
 
 *WARNING:* We must never run lambda analyze in this process, because we must analyze lambda only onсe.
 
