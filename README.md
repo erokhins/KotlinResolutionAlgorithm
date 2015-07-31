@@ -141,6 +141,21 @@ fun test(x: X?) {
 ```
 Data flow info for receiver of callable reference must be considered for following arguments even if callable reverence has several candidates.
 
+Data flow info must be taken into account when we construct constraint system:
+```Kotlin
+fun <T> proxy(t: T): T = t
+
+fun bar(a: Int) {}
+
+fun test(x: Int?) {
+    if (x != null) {
+        val a = proxy(x) // smart cast, a: Int
+        
+        bar(proxy(x)) // smart cast
+    }
+}
+```
+
 ## Build prioritized tasks.
 
 If call `foo` has receiver `r`, then `r` has JetTypeInfo with type for `r`. 
