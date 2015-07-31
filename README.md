@@ -156,7 +156,7 @@ fun test(x: Int?) {
 }
 ```
 
-## Build prioritized tasks.
+## Build prioritized tasks
 
 If call `foo` has receiver `r`, then `r` has JetTypeInfo with type for `r`. 
 Its type may contain nonfixed type variables T_i. Also JetTypeInfo contains constrain system for T_i.
@@ -178,7 +178,7 @@ When we created task with extension function, we just collected all extension fu
 ## Lambdas
 We can't analyze lambda body when we don't know some type of argument or receiver.
 Therefore we begin the process of body analyze when we know all types. 
-This may happen for many reasons:
+This may happen for one of the following reasons:
 
 - Function, which receive lambda, has explicit types for lambda parameters and receiver.
 - We solved part(or all) of constraint system and parameter types have become known.
@@ -208,6 +208,7 @@ T2 :> String
 
 ## Resolve candidate
 For each candidate we must give an answer if it is a match or not. If not, we collect some errors.
+
 Now, we have collected JetTypeInfo for arguments and receiver. 
 Also we builded shape types for lambda arguments(see *Resolve receiver and arguments*).
 
