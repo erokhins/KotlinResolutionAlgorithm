@@ -209,12 +209,12 @@ T2 :> String
 ## Resolve candidate
 For each candidate we must give an answer if it is a match or not. If not, we collect some errors.
 
-Now, we have collected JetTypeInfo for arguments and receiver. 
+Note that we already collected JetTypeInfo for arguments and receiver. 
 Also we builded shape types for lambda arguments(see *Resolve receiver and arguments*).
 
-We construct common system which contains type variable for call `foo` and all constraint system for receiver and arguments.
+Now we construct common system which contains type variable for call `foo` and all constraint system for receiver and arguments.
 After that, we search conflicts in this system(i.e. system never sucsedded). 
-If we not found them, then candidate is succesfull and JetTypeInfo contains this common system.
+If we don't find them, then candidate is successful and JetTypeInfo contains this common system.
 
 *WARNING:* We must never run lambda analyze in this process, because we must analyze lambda only onсe.
 
@@ -222,7 +222,15 @@ If we not found them, then candidate is succesfull and JetTypeInfo contains this
 
 ## Order for solving constraint system
 We create special order for fixing type variables.
+```Kotlin
+fun <T> ref(s: T): Int = 1
+fun ref(s : String) {}
+fun <T, K> foo(f: (T) -> K, g: (K) -> Int): T = null!!
 
+fun test1() {
+	val a: Int = foo (:: ref ) { it }
+}
+```
 
 
 ----
