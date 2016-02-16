@@ -362,7 +362,7 @@ fun main(args: Array<String>) {
 
 ## Magic invoke function
 As you know from previous sections call `a.foo()` can mean several things: member call, extension call, etc.
-But in all considered cases `foo` was a function, which is not always true
+But in all considered cases `foo` was a function, which is not always true.
 Sometimes, we may have property `foo` which is has type `() -> Int`. In this case `a.foo()` is almost the same as `a.foo.invoke()`.
 But `foo` also can have type `A.() -> Int`. In this case this call is equal to this: `foo.invoke(a)`.
 
@@ -390,3 +390,75 @@ fun main(args: Array<String>) {
 ```
 
 What about priority of such functions? It is pure magic!
+
+We'll try show you short overview of this magic. Suppose we have call `foo()`. 
+Also suppose that we found one applicable function `foo` and property `foo` with some `invoke` function, i.e. our call is the same as `foo.invoke()`.
+To choose one of these variants we should do the following: compare function `foo` and property `foo` like they both are usual functions(for usual functions we describe priority in previous sections).
+Also we should compare function `foo` and function `invoke`.
+If function `foo` wins at least once in these two comparisons then call `foo()` will be resolved to function call. 
+Otherwise it will be resolved to property `foo` and `invoke` call.
+ 
+Examples:
+```kotlin
+class A {
+    val foo: () -> Unit = { println("property and invoke") }
+}
+
+class B
+fun B.foo() = println("function foo")
+
+fun main(args: Array<String>) {
+    with(A()) {
+        with(B()) {
+            foo() // function foo
+        }
+    }
+    with(B()) {
+        with(A()) {
+            foo() // property and invoke
+        }
+    }
+}
+```
+
+```kotlin
+// FILE: 1.kt
+package a
+
+class A(val foo: Int, val bar: String)
+
+fun A.foo() = println("I'm extension function foo")
+operator fun String.invoke() = println("I'm invoke operator for String")
+
+// FILE: 2.kt
+package b
+
+import a.*
+
+fun A.bar() = println("I'm extension function bar")
+operator fun Int.invoke() = println("I'm invoke operator Int")
+
+fun main(args: Array<String>) {
+    val a = A(1, "")
+
+    a.foo() // I'm invoke operator Int
+    a.bar() // I'm extension function bar
+}
+```
+
+Note. When we resolve property `foo` for some call `foo()` we don't stop on first property, 
+but instead we collect all variables with name `foo` and for each of them try to find some invoke function. Example:
+```kotlin
+class A {
+    val foo: () -> Unit = { println("Hello world!") }
+}
+
+fun test(foo: Int) {
+    with(A()) {
+        foo // resolved to parameter of function test
+        foo() // resolved to property foo of class A with invoke
+    }
+}
+
+fun main(args: Array<String>) = test(1)
+```
