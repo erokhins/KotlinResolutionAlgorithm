@@ -26,4 +26,5 @@ fun test() {
 }
 ```
 
+Same for parameters: https://jetbrains.slack.com/archives/kotlin-design/p1459961727000398
 
