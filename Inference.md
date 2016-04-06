@@ -15,3 +15,15 @@ Note: body of lambda argument will be computed inside function body => correct D
 Also we should check some other cases before name resolution:
 - spread before lambda or callable reference
 - several external lambda arguments
+ 
+
+Type argument placeholder:
+```kotlin
+fun <A, B, C> foo(a: A, c: C): B = TODO()
+
+fun test() {
+  foo<_, Int, _>(1, "")
+}
+```
+
+
