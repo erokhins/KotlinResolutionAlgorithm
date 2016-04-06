@@ -28,3 +28,8 @@ fun test() {
 
 Same for parameters: https://jetbrains.slack.com/archives/kotlin-design/p1459961727000398
 
+Save information into trace for:
+- named argument
+- resolved call & variable in invoke call
+- All staff in NewResoltuionOldInference
+
