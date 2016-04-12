@@ -33,3 +33,22 @@ Save information into trace for:
 - resolved call & variable in invoke call
 - All staff in NewResoltuionOldInference
 
+
+DataFlowInfo for arguments: https://jetbrains.slack.com/archives/kotlin-design/p1460380323000456
+Another example:
+```
+class X {
+    fun bar(x: X) {}
+    
+    val foo: (Any) -> Unit = {}
+}
+
+fun test(x: X?) {
+    x.foo(x!!) // incorrect also
+
+    x.bar(x!!) // incorrect
+}
+```
+Current decision -- leave as is.
+
+
