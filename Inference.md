@@ -52,3 +52,8 @@ fun test(x: X?) {
 Current decision -- leave as is.
 
 
+
+Intersection types sources:
+- smart cast
+- `T <: Some_1`, `T <: Some_2`
+
