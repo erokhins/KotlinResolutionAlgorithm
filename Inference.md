@@ -56,4 +56,5 @@ Current decision -- leave as is.
 Intersection types sources:
 - smart cast
 - `T <: Some_1`, `T <: Some_2`
+- java: `void <T> @NotNull T foo()` -- real type is `T & Any`
 
