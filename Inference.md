@@ -58,3 +58,5 @@ Intersection types sources:
 - `T <: Some_1`, `T <: Some_2`
 - java: `void <T> @NotNull T foo()` -- real type is `T & Any`
 
+
+Star projections: https://jetbrains.slack.com/archives/kotlin-design/p1460667989000618
