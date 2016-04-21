@@ -66,3 +66,21 @@ val f: Foo<*> = TODO()
 > Если аппроксимация обламывается, то мы всегда можем параметры вывести как `Nothing`, а return type как `Any`.
 
 **Печаль**: Пусть `class Bar<T : Number>` тогда для `Bar<in Int>` нету развёрнутого представления в языке :(
+
+## Аппроксимация Росса.
+http://www.cs.cornell.edu/~ross/publications/mixedsite/mixedsite-tate-fool13.pdf
+Собственно предлагается ей следовать. Там не описано, что делать в случае, когда captured переменные имеют среди своих
+собственных надтипах типы, в которых есть другие captured типы. 
+
+Разберёмся на примере:
+```
+exist A: ArrayList<B>, B . HashMap<A, B> 
+<: exist A: ArrayList<B>, B . HashMap<A, out Any?>
+<: exist A: ArrayList<B>, B . HashMap<out ArrayList<B>, out Any?>
+<: exist A: ArrayList<B>, B . HashMap<out ArrayList<out Any?>, out Any?>
+= HashMap<out ArrayList<*>, *>
+```
+В случае, когда у нас этот процесс не заканчивается(например `exist F : Bar<F> . Foo<F>`) предлагается в какой-то 
+момент просто забивать и аппроксимировать к `Any?` и `Nothing` соответственно.
+
+**Вопрос**: Возможно ли создать такой пример, в котором обрыв аппроксимации приводил бы к некорректному типу(см. прошлый параграф)
