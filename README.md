@@ -1,4 +1,4 @@
-# KotlinResolveAlgorithm
+# KotlinResolutionAlgorithm
 Description for new resolve algorithm
 
 ## ExpressionContext
