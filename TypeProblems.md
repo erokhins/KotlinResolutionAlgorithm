@@ -84,3 +84,44 @@ exist A: ArrayList<B>, B . HashMap<A, B>
 момент просто забивать и аппроксимировать к `Any?` и `Nothing` соответственно.
 
 **Вопрос**: Возможно ли создать такой пример, в котором обрыв аппроксимации приводил бы к некорректному типу(см. прошлый параграф)
+
+## Intersection types and constraint system
+
+Ну... всё плохо. В общем, в java верен инвариант, что intersection тип бывает только из proper типов, что очень хорошо. Они его представляют почти как captured тип, у которого есть несколько upper-bound-ов, и T может быть равен ему. Собственно, с incorporation-ом тоже нет проблем, т.к. если `C <: A&B`, то это тупо `C <: A & C <: B`. А если в другую сторону, то это ведёт себя так же, как `C#1 : A, B` и  `C#1 <: D`.
+
+И, кстати, инвариант скорее всего не верен, т.к. captured типы, пойду попробую пример написать.
+
+Проблемы начинаются если `T & Any <: String`. Я не знаю, как из этого вывести, что `T <: String?`. Пример на котлине:
+```kotlin
+// FILE: 1.kt
+package some
+
+interface Inv<T>
+
+interface B {
+    fun <T> foo(f: Inv<T>): T
+}
+
+fun bar(b: String) {}
+
+fun <T> id(t: T) = t
+
+fun test(a: A, inv: Inv<String?>) {
+    bar(a.foo(inv)) // Error:(14, 11) Kotlin: Type inference failed. Expected type mismatch: inferred type is String but String was expected
+}
+
+// FILE: A.java
+package some;
+
+import org.jetbrains.annotations.NotNull;
+
+@kotlin.jvm.PurelyImplements("some.B")
+public class A implements B {
+    @Override
+    @NotNull
+    public <T> T foo(@NotNull Inv<T> f) {
+        return null;
+    }
+}
+```
+
