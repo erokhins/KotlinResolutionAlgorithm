@@ -125,3 +125,40 @@ public class A implements B {
 }
 ```
 
+Чисто поржать: пример для java, в котором от порядка деклараций зависит скомпилируется код или нет:
+```
+import java.util.List;
+import java.util.function.Consumer;
+
+public class TestO8 {
+    interface X {
+        void funX();
+    }
+    interface Y {
+        void funY();
+    }
+
+    interface A extends Inv<X> {}
+    interface B extends Inv<Y> {}
+
+    interface Inv<T> {}
+
+    public static <T> T intersectAB(Inv<? super T> i1, Inv<? super T> i2, Consumer<T> c) {
+        return null;
+    }
+
+    public static <Q> Q getXorY(Inv<Q> i1) {
+        return null;
+    }
+
+    public static void bar(Inv<A> ia, Inv<B> ib, Inv<List> il) {
+        intersectAB(ib, ia,
+                aAndB -> getXorY(aAndB).funX()
+        );
+    }
+}
+```
+Если поменять местами декларации A и B, то нескомпилится. 
+
+Если подебажить, то окажется, что когда мы смотрим на `A&B <: Inv<Q>` то мы считаем, что это `Inv<X> <: Inv<Q>`
+
