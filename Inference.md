@@ -60,3 +60,19 @@ Intersection types sources:
 
 
 Star projections: https://jetbrains.slack.com/archives/kotlin-design/p1460667989000618
+
+
+### Smart cast vs inference
+```
+class Bar<T>(val t: T)
+
+@Suppress("TYPE_PARAMETER_OF_PROPERTY_NOT_USED_IN_RECEIVER")
+val <T: CharSequence?> bar: T = TODO()
+
+fun <T : Any> Bar<T?>.foo(vararg a: T) {}
+
+fun test() {
+    bar.foo(bar.t!!, bar.t, "") // on bar.t here may be unstable smart cast
+}
+```
+Resolution: hard to implement, rare case.
