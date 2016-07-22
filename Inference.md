@@ -76,3 +76,16 @@ fun test() {
 }
 ```
 Resolution: hard to implement, rare case.
+
+
+### Invoke on variable with uninferred variable type
+```
+@Suppress("TYPE_PARAMETER_OF_PROPERTY_NOT_USED_IN_RECEIVER")
+val <T> foo: T.(T) -> T = TODO()
+
+fun <T> bar(): T = TODO()
+
+fun test() {
+    bar().foo("")
+}
+```
