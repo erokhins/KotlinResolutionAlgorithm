@@ -89,3 +89,19 @@ fun test() {
     bar().foo("")
 }
 ```
+
+## Callable references
+```
+class A {
+    fun foo() : Int = 4
+}
+fun A.foo(): String = ""
+
+fun bar(f: (A) -> Int) {}
+fun test() {
+    fun bar(f: (A) -> String) {}
+    
+    bar(A::foo)
+}
+```
+https://jetbrains.slack.com/archives/kotlin-design/p1469633584000074
